@@ -19,6 +19,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.daman.farmify.profile.ListContainer;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -37,8 +39,10 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                toolbar.setVisibility(View.VISIBLE);
             }
         });
 
@@ -67,11 +71,24 @@ public class HomeActivity extends AppCompatActivity
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                SharedPreferences preferences = getSharedPreferences("loginSp", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor=preferences.edit();
-                editor.putBoolean("loggedin",false);
-                editor.putString("email","");
-                editor.commit();
+                SharedPreferences preferencesLogin = getSharedPreferences("loginSp", Context.MODE_PRIVATE);
+                SharedPreferences preferencesSignUp = getSharedPreferences("signupsp", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editorLogin=preferencesLogin.edit();
+                SharedPreferences.Editor editorSignup=preferencesSignUp.edit();
+                editorLogin.putBoolean("loggedin",false);
+                editorLogin.putString("email","");
+                editorLogin.commit();
+                editorSignup.putInt("id",0);
+                editorSignup.putBoolean("signup",false);
+                editorSignup.putInt("id",0);
+                editorSignup.putString("name","");
+                editorSignup.putString("address","");
+                editorSignup.putString("email","");
+                editorSignup.putString("phone","");
+                editorSignup.putString("password","");
+                editorSignup.putString("state","");
+                editorSignup.putString("dob","");
+                editorSignup.commit();
                 Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
@@ -125,13 +142,17 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_profile) {
+            Intent intent=new Intent(getApplicationContext(),ListContainer.class);
+            startActivity(intent);
+             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_medication) {
 
-        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_localhealth) {
+
+        } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {
             logout();

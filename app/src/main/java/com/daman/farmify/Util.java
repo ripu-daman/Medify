@@ -32,4 +32,5 @@ public class Util {
     public static final Uri User_URI = Uri.parse("content://com.daman.farmify.userprovider/"+TAB_NAME);
     public static final String INSERT_USER_PHP = "http://gogna.esy.es/Farmify/insert.php";
     public static final String LOGIN_USER_PHP = "http://gogna.esy.es/Farmify/login.php";
+    public static final String UPDATE_USER_PHP="http://gogna.esy.es/Farmify/update.php";
 }

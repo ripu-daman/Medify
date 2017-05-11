@@ -4,12 +4,12 @@ package com.daman.farmify;
 
 public class UserBean {
 int id;
-    String name,address,email,phone,password,state;
+    String name,address,email,phone,password,state,dob;
 
     public UserBean() {
     }
 
-    public UserBean(int id, String name, String address, String email, String phone, String password, String state) {
+    public UserBean(int id, String name, String address, String email, String phone, String password, String state,String dob) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -17,6 +17,7 @@ int id;
         this.phone = phone;
         this.password = password;
         this.state = state;
+        this.dob=dob;
     }
 
     public int getId() {
@@ -75,6 +76,14 @@ int id;
         this.state = state;
     }
 
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
     @Override
     public String toString() {
         return "UserBean{" +
@@ -85,6 +94,7 @@ int id;
                 ", phone='" + phone + '\'' +
                 ", password='" + password + '\'' +
                 ", state='" + state + '\'' +
+                ", dob='" + dob + '\'' +
                 '}';
     }
 }

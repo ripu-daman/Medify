@@ -3,25 +3,25 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/profile"
+            android:title="Profile" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_medication"
+            android:icon="@drawable/pill"
+            android:title="Medication" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_localhealth"
+            android:icon="@drawable/ic_local_pharmacy_black_24dp"
+            android:title="Local Health Care" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Settings" />
     </group>
 
-    <group>
-        <menu>
+    <item android:title="Utilities">
+        <menu >
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/logout"
@@ -29,6 +29,6 @@
 
 
         </menu>
-    </group>
+    </item>
 
 </menu>

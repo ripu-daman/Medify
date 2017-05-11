@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="70dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:weightSum="1"
+        android:gravity="center"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true" >
+
+        <!-- Name Label -->
+<TextView
+    android:id="@+id/name"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="5dp"
+    android:textSize="15dp"
+    android:text="Name"
+    android:layout_gravity="left"
+    android:textColor="@color/base"/>
+        <EditText android:id="@+id/input_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Name"
+
+            />
+
+        <!-- mobile number -->
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:textSize="15dp"
+            android:text="Phone"
+            android:layout_gravity="left"
+            android:textColor="@color/base"
+            android:paddingTop="20dp"/>
+
+        <EditText android:id="@+id/input_mobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Mobile Number"
+            />
+
+
+        <!-- Password Label -->
+        <TextView
+            android:id="@+id/password"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:textSize="15dp"
+            android:text="Password"
+            android:layout_gravity="left"
+            android:textColor="@color/base"
+            android:paddingTop="20dp"/>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" ><EditText android:id="@+id/input_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="Password"
+            />
+            <ImageButton
+                android:id="@+id/show_password"
+                android:padding="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/input_password"
+                android:layout_alignRight="@+id/input_password"
+                android:src="@drawable/password_eye"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/dob"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:textSize="15dp"
+            android:text="Date Of Birth"
+            android:layout_gravity="left"
+            android:textColor="@color/base"
+            android:paddingTop="20dp"/>
+        <EditText
+            android:id="@+id/input_dob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:hint="Date Of Birth" />
+
+        <!-- Submit Button -->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_submit"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="50dp"
+            android:layout_weight="0.13"
+            android:textColor="@color/accent"
+            android:padding="12dp"
+            android:text="Update" />
+
+
+    </LinearLayout>
+</ScrollView>

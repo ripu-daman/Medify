@@ -26,7 +26,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.daman.farmify.profile.BasicInfo;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -58,6 +61,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean loggedIn = false;
     ConnectivityManager connectivityManager;
     NetworkInfo networkInfo;
+    String name,phone,address,email,password,dob,state;
+    int id=0;
+    JSONArray jsonArray;
+    JSONObject jsonObjectLog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,67 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         }
     }
-    void signIn() {
-        String input_email = emailText.getText().toString().trim();
-        String input_password = passwordText.getText().toString().trim();
-        Log.i("email", input_email);
-        Log.i("password", input_password);
-        if (!input_email.isEmpty() && !input_password.isEmpty()) {
-            String[] projection = {Util.COL_ID, Util.COL_NAME, Util.Col_ADDRESS, Util.COL_PHONE, Util.COL_EMAIL, Util.COL_PASSWORD, Util.COL_STATE};
-            Cursor cursor = resolver.query(Util.User_URI, projection, null, null, null);
-            Log.i("cursor", String.valueOf(cursor));
-            if (cursor != null) {
-                cursor.moveToFirst();
 
-                int id = 0;
-                String name = "", address = "", phone = "", email = "", password = "", state = "";
-
-                while (cursor.moveToNext()) {
-                    email = cursor.getString(cursor.getColumnIndex(Util.COL_EMAIL));
-                    password = cursor.getString(cursor.getColumnIndex(Util.COL_PASSWORD));
-                    Log.i("email",email);
-                    Log.i("password",password);
-                    Log.i("Cursor email",cursor.getString(0));
-                    Log.i("Cursor password",cursor.getString(1));
-                    //for (int i = 0; i < cursor.getColumnCount(); i++) {
-                        if (email.equals(input_email) && password.equals(input_password)) {
-
-                            Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                            break;
-                        }else if (!email.equals(input_email) && !password.equals(input_password)) {
-                            showDialog();
-                        //Toast.makeText(this, "You haven't registered yet!", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                }
-            } else {
-
-                Toast.makeText(this,
-                        "Please enter the credentials!", Toast.LENGTH_LONG)
-                        .show();
-            }
-        }
-    }
-    void showDialog(){
-        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("Alert");
-        alertDialog.setMessage("Wrong login Details!");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-        alertDialog.show();
-
-    }
 
     void login(){
 
@@ -167,11 +114,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     i = jsonObject.getInt("success");
+                    jsonObjectLog = new JSONObject(response);
+                    jsonArray = jsonObjectLog.getJSONArray("user");
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
                 //Toast.makeText(getApplicationContext(), "Response: "+response, Toast.LENGTH_SHORT).show();
                if(i==1){
+                   retrieve();
                    SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences("loginSp", Context.MODE_PRIVATE);
                    SharedPreferences.Editor editor = sharedPreferences.edit();
                    editor.putBoolean("loggedin", true);
@@ -244,7 +195,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+        if (password.isEmpty() || password.length() < 4 || password.length() > 20) {
             passwordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {
@@ -253,4 +204,101 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         return valid;
     }
+    public void retrieve(){
+
+        try {
+
+            for(int i=0;i<jsonArray.length();i++){
+                JSONObject jObj = jsonArray.getJSONObject(i);
+
+                id = jObj.getInt("_ID");
+                name = jObj.getString("_NAME");
+                phone = jObj.getString("_PHONE");
+                address = jObj.getString("_ADDRESS");
+                email = jObj.getString("_EMAIL");
+                password = jObj.getString("_PASSWORD");
+                dob = jObj.getString("_DOB");
+                state=jObj.getString("_STATE");
+                userBean = new UserBean(id,name,address,email,phone,password,state,dob);
+                Log.i("userobj",userBean.toString());
+            }
+            SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences("signupsp", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("signup", true);
+            editor.putInt("id",userBean.getId());
+            editor.putString("name",userBean.getName());
+            editor.putString("address",userBean.getAddress());
+            editor.putString("email",userBean.getEmail());
+            editor.putString("phone",userBean.getPhone());
+            editor.putString("password",userBean.getPassword());
+            editor.putString("state",userBean.getState());
+            editor.putString("dob",userBean.getDob());
+            editor.commit();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    /*   CONTENT PROVIDER CODE
+ void signIn() {
+        String input_email = emailText.getText().toString().trim();
+        String input_password = passwordText.getText().toString().trim();
+        Log.i("email", input_email);
+        Log.i("password", input_password);
+        if (!input_email.isEmpty() && !input_password.isEmpty()) {
+            String[] projection = {Util.COL_ID, Util.COL_NAME, Util.Col_ADDRESS, Util.COL_PHONE, Util.COL_EMAIL, Util.COL_PASSWORD, Util.COL_STATE};
+            Cursor cursor = resolver.query(Util.User_URI, projection, null, null, null);
+            Log.i("cursor", String.valueOf(cursor));
+            if (cursor != null) {
+                cursor.moveToFirst();
+
+                int id = 0;
+                String name = "", address = "", phone = "", email = "", password = "", state = "";
+
+                while (cursor.moveToNext()) {
+                    email = cursor.getString(cursor.getColumnIndex(Util.COL_EMAIL));
+                    password = cursor.getString(cursor.getColumnIndex(Util.COL_PASSWORD));
+                    Log.i("email",email);
+                    Log.i("password",password);
+                    Log.i("Cursor email",cursor.getString(0));
+                    Log.i("Cursor password",cursor.getString(1));
+                    //for (int i = 0; i < cursor.getColumnCount(); i++) {
+                        if (email.equals(input_email) && password.equals(input_password)) {
+
+                            Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                        }else if (!email.equals(input_email) && !password.equals(input_password)) {
+                            showDialog();
+                        //Toast.makeText(this, "You haven't registered yet!", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                }
+            } else {
+
+                Toast.makeText(this,
+                        "Please enter the credentials!", Toast.LENGTH_LONG)
+                        .show();
+            }
+        }
+    }
+    void showDialog(){
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("Wrong login Details!");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+        alertDialog.show();
+
+    }*/
 }

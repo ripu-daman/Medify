@@ -20,10 +20,7 @@
             android:theme="@style/AppTheme.Dark" />
         <activity
             android:name=".LoginActivity"
-
-            android:theme="@style/AppTheme.Dark">
-
-        </activity>
+            android:theme="@style/AppTheme.Dark" />
 
         <provider
             android:name=".UserProvider"
@@ -46,9 +43,9 @@
         <!-- [END firebase_iid_service] -->
         <activity
             android:name=".HomeActivity"
-
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SplashActivity"
+        <activity
+            android:name=".SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,6 +53,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".profile.ListContainer" />
+        <activity android:name=".profile.BasicInfo"
+            android:theme="@style/AppTheme.BasicInfo"></activity>
     </application>
 
 </manifest>

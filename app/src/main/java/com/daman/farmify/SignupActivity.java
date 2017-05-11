@@ -1,8 +1,11 @@
 package com.daman.farmify;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.ActionBar;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,6 +33,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +47,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     @InjectView(R.id.input_mobile) EditText phoneText;
     @InjectView(R.id.input_password) EditText passwordText;
     @InjectView(R.id.input_state) Spinner state;
+    @InjectView(R.id.input_dob) EditText dobText;
     @InjectView(R.id.btn_signup) Button signupButton;
     @InjectView(R.id.link_login) TextView loginLink;
     UserBean userBean;
@@ -51,6 +57,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     ProgressDialog progressDialog;
     ConnectivityManager connectivityManager;
     NetworkInfo networkInfo;
+    DatePickerDialog datePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         ButterKnife.inject(this);
         loginLink.setOnClickListener(this);
         signupButton.setOnClickListener(this);
+        dobText.setOnClickListener(this);
         userBean=new UserBean();
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Creating Account...");
@@ -67,9 +75,14 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         adapter.add("Select State");
         adapter.add("New Delhi");
         adapter.add("Punjab");
-        adapter.add("Chennai");
-        adapter.add("Mumbai");
-        adapter.add("bangluru");
+        adapter.add("Goa");
+        adapter.add("Maharashtra");
+        adapter.add("Tamil Nadu");
+        adapter.add("Rajasthan");
+        adapter.add("Uttar Pradesh");
+        adapter.add("Gujrat");
+        adapter.add("Bihar");
+        adapter.add("Haryana");
         state.setAdapter(adapter);
         state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -104,13 +117,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             userBean.setEmail(emailText.getText().toString().trim());
             userBean.setPhone(phoneText.getText().toString().trim());
             userBean.setPassword(passwordText.getText().toString().trim());
-
+            userBean.setDob(dobText.getText().toString().trim());
             if(validateFields()) {
                 if (isNetworkConected())
                     insertOverCloud();
                 else
                     Toast.makeText(this, "Please connect to Internet", Toast.LENGTH_LONG).show();
             }
+        }
+        else if(id==R.id.input_dob){
+            showDatePickerDialog();
         }
     }
     /*void insertIntoDB(){
@@ -132,6 +148,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         emailText.setText("");
         phoneText.setText("");
         passwordText.setText("");
+        dobText.setText("");
         state.setSelection(0);
     }
     void insertOverCloud(){
@@ -151,6 +168,18 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 //Toast.makeText(getApplicationContext(), "Response: "+response, Toast.LENGTH_SHORT).show();
                 if(i==1){
+                    SharedPreferences sharedPreferences = SignupActivity.this.getSharedPreferences("signupsp", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("signup", true);
+
+                    editor.putString("name",userBean.getName());
+                    editor.putString("address",userBean.getAddress());
+                    editor.putString("email",userBean.getEmail());
+                    editor.putString("phone",userBean.getPhone());
+                    editor.putString("password",userBean.getPassword());
+                    editor.putString("state",userBean.getState());
+                    editor.putString("dob",userBean.getDob());
+                    editor.commit();
                     Toast.makeText(SignupActivity.this,"Registration Successful!",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(SignupActivity.this,LoginActivity.class);
                     startActivity(intent);
@@ -174,6 +203,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 map.put("phone",userBean.getPhone());
                 map.put("password",userBean.getPassword());
                 map.put("state",userBean.getState());
+                map.put("dob",userBean.getDob());
                 map.put("token",token);
                 return map;
             }
@@ -232,6 +262,26 @@ if(userBean.getAddress().isEmpty()){
             flag=false;
             Toast.makeText(SignupActivity.this,"Please select city!",Toast.LENGTH_LONG).show();
         }
+        if(userBean.getDob().isEmpty()){
+            flag=false;
+            dobText.setError("Please enter Date Of Birth!");
+        }
         return flag;
+    }
+    DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            dobText.setText(year+" / "+month+" / "+dayOfMonth);
+        }
+    };
+    void showDatePickerDialog(){
+
+        Calendar calendar = Calendar.getInstance();
+        int dd = calendar.get(Calendar.DAY_OF_MONTH);
+        int mm = calendar.get(Calendar.MONTH);
+        int yy = calendar.get(Calendar.YEAR);
+
+        datePickerDialog = new DatePickerDialog(this,dateSetListener,yy,mm,dd);
+        datePickerDialog.show();
     }
 }
