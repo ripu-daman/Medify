@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f0f0f0"
-    android:id="@+id/content_home"
-    >
-
-   <!-- <GridView
+    tools:context="com.daman.farmify.GridHome.HomeFragment"
+    android:background="#f0f0f0">
+    <GridView
         android:id="@+id/gridView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -21,8 +18,6 @@
         android:horizontalSpacing="5dp"
         android:focusable="true"
         android:clickable="true"
-        />-->
-
+        />
 
 </RelativeLayout>
-

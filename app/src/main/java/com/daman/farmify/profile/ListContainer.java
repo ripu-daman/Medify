@@ -28,6 +28,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ListContainer extends AppCompatActivity implements AdapterView.OnItemClickListener{
+
+//    UNUSED ACTIVITY- THE CONTROL HAS BEEN SHIFTED TO THE PROFILE FRAGMENT
     UserBean bean;
     ListBean listBean;
     ListAdapter adapter;
@@ -43,7 +45,6 @@ public class ListContainer extends AppCompatActivity implements AdapterView.OnIt
         list= new ArrayList<>();
         ListBean basicinfo= new ListBean(R.drawable.basicinfo,"Basic Info","View and edit your basic info.");
         ListBean healthchart= new ListBean(R.drawable.healthchart,"Health Chart","View your health chart");
-
 
         list.add(basicinfo);
         list.add(healthchart);

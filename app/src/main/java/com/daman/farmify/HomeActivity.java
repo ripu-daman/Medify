@@ -4,9 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,17 +18,49 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.TextView;
 
+import com.daman.farmify.GridHome.GridViewAdapter;
+import com.daman.farmify.GridHome.HomeFragment;
+import com.daman.farmify.GridHome.ImageItem;
 import com.daman.farmify.profile.ListContainer;
+import com.daman.farmify.profile.ProfileFragment;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener ,AdapterView.OnItemClickListener,
+        HomeFragment.OnFragmentInteractionListener,ProfileFragment.OnFragmentInteractionListener{
 
     TextView texthome;
+    TextView textname;
+    SharedPreferences sharedPreferences;
+    String name;
+    GridView gridView;
+    GridViewAdapter gridAdapter;
+    ArrayList<ImageItem> data ;
+    ImageItem item,item1,item2,item3,item4,item5;
+    public void initGrid(){
+        gridView = (GridView) findViewById(R.id.gridView);
+        data= new ArrayList<>();
+        item=new ImageItem(R.drawable.image_2,"Item 1");
+        item1=new ImageItem(R.drawable.image_3,"Item 2");
+        item2=new ImageItem(R.drawable.image_7,"Item 3");
+        item3=new ImageItem(R.drawable.image_8,"Item 4");
+        item4=new ImageItem(R.drawable.image_2,"Item 5");
+        item5=new ImageItem(R.drawable.image_3,"Item 6");
+        data.add(item);
+        data.add(item1);
+        data.add(item2);
+        data.add(item3);
+        data.add(item4);
+        data.add(item5);
+
+        gridAdapter = new GridViewAdapter(this, R.layout.grid_item_layout, data);
+        gridView.setAdapter(gridAdapter);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +82,25 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View nv = navigationView.getHeaderView(0);
         texthome= (TextView) findViewById(R.id.text_home);
+        textname= (TextView)nv. findViewById(R.id.text_user);
+        sharedPreferences = getSharedPreferences("signupsp", Context.MODE_PRIVATE);
+        name=sharedPreferences.getString("name","");
+        textname.setText(name);
+       // RelativeLayout relativeLayout= (RelativeLayout)nv.findViewById(R.id.content_home);
+        //initGrid();
+//        gridView.setOnItemClickListener(this);
+        HomeFragment homeFragment =new HomeFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_home, homeFragment, homeFragment.getTag()).commit();
+
     }
     public void clickHandler(View v){
         int id = v.getId();
@@ -63,6 +109,7 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intent);
             finish();
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            //textname.setText("");
         }
     }
     public void logout(){
@@ -102,6 +149,7 @@ public class HomeActivity extends AppCompatActivity
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+
     }
 
     @Override
@@ -130,6 +178,7 @@ public class HomeActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
             return true;
         }
 
@@ -143,9 +192,12 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            Intent intent=new Intent(getApplicationContext(),ListContainer.class);
+           /* Intent intent=new Intent(getApplicationContext(),ListContainer.class);
             startActivity(intent);
-             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);*/
+           ProfileFragment profileFragment=new ProfileFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_home, profileFragment, profileFragment.getTag()).commit();
 
         } else if (id == R.id.nav_medication) {
 
@@ -161,5 +213,17 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if(position==0){
+
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

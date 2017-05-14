@@ -180,8 +180,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     editor.putString("state",userBean.getState());
                     editor.putString("dob",userBean.getDob());
                     editor.commit();
+                    SharedPreferences sharedPreferencesLogin = SignupActivity.this.getSharedPreferences("loginSp", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor LoginEditor = sharedPreferencesLogin.edit();
+                    LoginEditor.putBoolean("loggedin", true);
+                    LoginEditor.putString("email", userBean.getEmail());
+                    LoginEditor.commit();
                     Toast.makeText(SignupActivity.this,"Registration Successful!",Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(SignupActivity.this,LoginActivity.class);
+                    Intent intent = new Intent(SignupActivity.this,HomeActivity.class);
                     startActivity(intent);
                     finish();
                 } else Toast.makeText(getApplicationContext(), "Something Went Wrong! ", Toast.LENGTH_SHORT).show();
