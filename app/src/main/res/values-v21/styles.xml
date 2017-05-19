@@ -52,5 +52,9 @@
 
 
     </style>
+    <style name="animationdialog">
+        <item name="@android:windowEnterAnimation">@anim/dialog_in</item>
+        <item name="@android:windowExitAnimation">@anim/dialog_out</item>
+    </style>
 
 </resources>

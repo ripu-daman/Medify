@@ -160,9 +160,10 @@ public void setFields(){
                     String message = jsonObject.getString("message");
 
                     if(success == 1){
-                        Toast.makeText(BasicInfo.this,message,Toast.LENGTH_LONG).show();
+                        //Toast.makeText(BasicInfo.this,message,Toast.LENGTH_LONG).show();
                         AlertDialog.Builder builder = new AlertDialog.Builder(BasicInfo.this);
                         builder.setMessage("Please login again with new credentials to update changes!");
+                        builder.setCancelable(false);
                         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int which) {

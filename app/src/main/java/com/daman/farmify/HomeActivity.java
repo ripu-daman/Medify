@@ -42,25 +42,7 @@ public class HomeActivity extends AppCompatActivity
     GridViewAdapter gridAdapter;
     ArrayList<ImageItem> data ;
     ImageItem item,item1,item2,item3,item4,item5;
-    public void initGrid(){
-        gridView = (GridView) findViewById(R.id.gridView);
-        data= new ArrayList<>();
-        item=new ImageItem(R.drawable.image_2,"Item 1");
-        item1=new ImageItem(R.drawable.image_3,"Item 2");
-        item2=new ImageItem(R.drawable.image_7,"Item 3");
-        item3=new ImageItem(R.drawable.image_8,"Item 4");
-        item4=new ImageItem(R.drawable.image_2,"Item 5");
-        item5=new ImageItem(R.drawable.image_3,"Item 6");
-        data.add(item);
-        data.add(item1);
-        data.add(item2);
-        data.add(item3);
-        data.add(item4);
-        data.add(item5);
 
-        gridAdapter = new GridViewAdapter(this, R.layout.grid_item_layout, data);
-        gridView.setAdapter(gridAdapter);
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

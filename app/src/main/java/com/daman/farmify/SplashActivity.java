@@ -17,9 +17,9 @@ boolean loggedIn;
         SharedPreferences sharedPreferences = getSharedPreferences("loginSp", Context.MODE_PRIVATE);
         loggedIn = sharedPreferences.getBoolean("loggedin",false);
         if(loggedIn){
-            handler.sendEmptyMessageDelayed(102,2000);
+            handler.sendEmptyMessageDelayed(102,1500);
         }else{
-            handler.sendEmptyMessageDelayed(101,2000);
+            handler.sendEmptyMessageDelayed(101,1500);
         }
     }
     Handler handler = new Handler(){
