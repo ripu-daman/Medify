@@ -3,6 +3,7 @@ package com.daman.farmify.Diseases;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public class DiseaseListContainer extends AppCompatActivity implements AdapterVi
     RelativeLayout relativeLayout;
     PopupWindow popupWindow;
     int position;
+    Boolean medicine;
     public void initList(){
         Intent rcv = getIntent();
         diseaseList=rcv.getStringArrayExtra("array");
@@ -41,13 +43,21 @@ public class DiseaseListContainer extends AppCompatActivity implements AdapterVi
         arrayAdapter=new ArrayAdapter<String>(this,R.layout.disease_list_item,R.id.textView,diseaseList);
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(this);
+
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disease_list_container);
         relativeLayout= (RelativeLayout) findViewById(R.id.relative_vanish);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initList();
+
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 
     @Override
@@ -56,6 +66,7 @@ public class DiseaseListContainer extends AppCompatActivity implements AdapterVi
         if (position == 0) {
             String selectedItem = listView.getItemAtPosition(position).toString();
             showPrompt(selectedItem,diseasePos);
+
         } else if (position == 1) {
             String selectedItem = listView.getItemAtPosition(position).toString();
             showPrompt(selectedItem,diseasePos);

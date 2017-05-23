@@ -18,48 +18,51 @@
             android:layout_width="381dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:background="@drawable/gradient2"
+            android:background="@color/orange"
             android:gravity="center"
             android:padding="5dp"
-            android:text="heyy"
+            android:text="OOps..."
             android:textColor="@color/accent"
             android:textSize="20dp"
             android:textStyle="bold" />
+        <TextView
 
-       <RelativeLayout
-           android:layout_width="match_parent"
-           android:layout_height="50dp"
-           android:background="@color/green">
-           <TextView
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:text="@string/suggest_me_medicines"
-               android:gravity="left"
-               android:padding="10dp"
-               android:textStyle="bold"
-               android:textSize="15dp"
-               android:layout_marginTop="5dp"
-               />
-           <Switch
-            android:id="@+id/flag"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:gravity="right"
-               android:layout_alignParentRight="true"
-               android:layout_alignParentEnd="true"
-               android:layout_alignParentTop="true" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
 
-       </RelativeLayout>
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Medicine List"
+            android:textColor="@color/orange"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <ListView
         android:layout_marginTop="15dp"
-        android:id="@+id/list"
+        android:id="@+id/medicine_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="1dp"
+        android:dividerHeight="2dp"
+        android:divider="@color/orange"
+        android:elevation="10dp"
+        android:padding="10dp"
+        android:layout_weight="1"
         />
+<Button
+    android:id="@+id/add_medi"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:text="Click here to add your own medicine"
+    android:background="@color/orange"
+    android:textStyle="bold"
+    android:textColor="@color/accent"
+    android:padding="5dp"
+    android:layout_margin="10dp"
+    android:elevation="10dp"
+
+    />
 
 </LinearLayout>

@@ -21,10 +21,12 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daman.farmify.GridHome.GridViewAdapter;
 import com.daman.farmify.GridHome.HomeFragment;
 import com.daman.farmify.GridHome.ImageItem;
+import com.daman.farmify.Medication.MedicineFragment;
 import com.daman.farmify.profile.ListContainer;
 import com.daman.farmify.profile.ProfileFragment;
 
@@ -32,16 +34,17 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,AdapterView.OnItemClickListener,
-        HomeFragment.OnFragmentInteractionListener,ProfileFragment.OnFragmentInteractionListener{
+        HomeFragment.OnFragmentInteractionListener,ProfileFragment.OnFragmentInteractionListener,MedicineFragment.OnFragmentInteractionListener{
 
     TextView texthome;
     TextView textname;
     SharedPreferences sharedPreferences;
-    String name;
+    String name,diseaseName;
     GridView gridView;
     GridViewAdapter gridAdapter;
     ArrayList<ImageItem> data ;
     ImageItem item,item1,item2,item3,item4,item5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +53,8 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-                toolbar.setVisibility(View.VISIBLE);
-            }
-        });
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -84,6 +79,9 @@ public class HomeActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.content_home, homeFragment, homeFragment.getTag()).commit();
 
     }
+
+
+
     public void clickHandler(View v){
         int id = v.getId();
         if(id==R.id.text_home){
@@ -182,7 +180,9 @@ public class HomeActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_home, profileFragment, profileFragment.getTag()).commit();
 
         } else if (id == R.id.nav_medication) {
-
+            MedicineFragment medicineFragment=new MedicineFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_home, medicineFragment, medicineFragment.getTag()).commit();
 
         } else if (id == R.id.nav_localhealth) {
 

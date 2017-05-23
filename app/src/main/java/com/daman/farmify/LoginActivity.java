@@ -85,7 +85,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(id==R.id.link_signup){
             Intent intent=new Intent(LoginActivity.this,SignupActivity.class);
             startActivity(intent);
-
             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
         }
         else if (id==R.id.btn_login){

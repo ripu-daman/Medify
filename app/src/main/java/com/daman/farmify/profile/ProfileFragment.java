@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.RequestQueue;
+import com.daman.farmify.Medication.UserMedicineActivity;
 import com.daman.farmify.R;
 import com.daman.farmify.UserBean;
 
@@ -32,7 +33,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
 
         list= new ArrayList<>();
         ListBean basicinfo= new ListBean(R.drawable.basicinfo,"Basic Info","View and edit your basic info.");
-        ListBean healthchart= new ListBean(R.drawable.healthchart,"Health Chart","View your health chart");
+        ListBean healthchart= new ListBean(R.drawable.healthchart,"Your Medicine","View your medication");
 
 
         list.add(basicinfo);
@@ -138,6 +139,11 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
             intent.putExtra("phone",phone);
             intent.putExtra("password",password);
             intent.putExtra("dob",dob);
+            startActivity(intent);
+            this.getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+        }
+        if(position==1){
+            Intent intent=new Intent(getContext(),UserMedicineActivity.class);
             startActivity(intent);
             this.getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
         }

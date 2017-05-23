@@ -15,8 +15,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,10 +46,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Remedies extends AppCompatActivity {
+public class Remedies extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
 TextView textView;
     ArrayList<DiseaseBean> arrayList;
     ListView listView;
+    Switch flag;
     RequestQueue requestQueue;
     ProgressDialog progressDialog;
     JSONArray jsonArray;
@@ -57,12 +60,16 @@ TextView textView;
     String name,title,info,url;
     ConnectivityManager connectivityManager;
     NetworkInfo networkInfo;
+    SharedPreferences.Editor editor;
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remedies);
         listView= (ListView) findViewById(R.id.list);
         textView= (TextView) findViewById(R.id.text_header);
+        flag=(Switch)findViewById(R.id.flag);
+        flag.setOnCheckedChangeListener(this);
         Intent rcv = getIntent();
         name=rcv.getStringExtra("disease");
         url=rcv.getStringExtra("url");
@@ -77,6 +84,13 @@ TextView textView;
                setContentView(R.layout.error);
             showSnackBar();
         }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
     void showList(){
         arrayList=new ArrayList<>();
@@ -126,29 +140,7 @@ TextView textView;
             }
         });
         requestQueue.add(request);
-/*
-        DiseaseBean db1=new DiseaseBean(0,"This is Title 1","This is content 1");
-        DiseaseBean db2=new DiseaseBean(0,"This is Title 2","This is content 2");
-        arrayList.add(db1);
-        arrayList.add(db2);
 
-        BindDictionary<DiseaseBean> dictionary = new BindDictionary<>();
-        dictionary.addStringField(R.id.text_title, new StringExtractor<DiseaseBean>() {
-            @Override
-            public String getStringValue(DiseaseBean item, int position) {
-
-                return item.getTitle();
-            }
-        });
-        dictionary.addStringField(R.id.text_content, new StringExtractor<DiseaseBean>() {
-            @Override
-            public String getStringValue(DiseaseBean item, int position) {
-
-                return item.getContent();
-            }
-        });
-        FunDapter funDapter=new FunDapter(this,arrayList,R.layout.remedie_list_item,dictionary);
-        listView.setAdapter(funDapter);*/
     }
     void setAdapter(){
         BindDictionary<DiseaseBean> dictionary = new BindDictionary<>();
@@ -196,4 +188,25 @@ TextView textView;
         snack.show();
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(isChecked){
+            Toast.makeText(getApplicationContext(), "Medicines are ready! Go take a look.", Toast.LENGTH_LONG).show();
+            sharedPreferences = Remedies.this.getSharedPreferences("MedicineFlag", Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            editor.putBoolean("medicine", true);
+            editor.putString("diseaseName",name);
+            editor.commit();
+
+
+        }else{
+            Toast.makeText(getApplicationContext(), "I don't need medication", Toast.LENGTH_LONG).show();
+            sharedPreferences = Remedies.this.getSharedPreferences("MedicineFlag", Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            editor.putBoolean("medicine", false);
+            editor.putString("diseaseName","");
+
+            editor.commit();
+        }
+    }
 }

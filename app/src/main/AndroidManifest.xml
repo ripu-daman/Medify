@@ -59,10 +59,14 @@
         <activity
             android:name=".profile.BasicInfo"
             android:theme="@style/AppTheme.BasicInfo" />
-        <activity android:name=".Diseases.DiseaseListContainer"
+        <activity
+            android:name=".Diseases.DiseaseListContainer"
             android:theme="@style/AppTheme.BasicInfo" />
-        <activity android:name=".Diseases.Remedies"
-            android:theme="@style/AppTheme.BasicInfo" ></activity>
+        <activity
+            android:name=".Diseases.Remedies"
+            android:theme="@style/AppTheme.BasicInfo" />
+        <activity android:name=".Medication.UserMedicineActivity"
+            android:theme="@style/AppTheme.BasicInfo"  ></activity>
     </application>
 
 </manifest>

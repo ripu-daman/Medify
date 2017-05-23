@@ -50,4 +50,6 @@ public class Util {
     public static final String RETRIEVE_TALKINGSLEEP_PHP="http://gogna.esy.es/Farmify/DiseaseRetrieve/retrieveTalkingSleep.php";
     public static final String RETRIEVE_NIGHTSWEATS_PHP="http://gogna.esy.es/Farmify/DiseaseRetrieve/retrieveNightSweat.php";
 
+    public static final String RETRIEVE_MEDICINE_PHP="http://gogna.esy.es/Farmify/Medicine/retrieveMedicine.php";
+
 }
