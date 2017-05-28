@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,11 +28,12 @@ public class DiseaseListContainer extends AppCompatActivity implements AdapterVi
     TextView textView,textTitle;
     String [] diseaseList;
     ArrayAdapter<String> arrayAdapter;
-    Button homeRemedies,expertHelp;
+    Button homeRemedies,emergencyCall,callDialog;
     RelativeLayout relativeLayout;
     PopupWindow popupWindow;
     int position;
     Boolean medicine;
+    AlertDialog dialog1;
     public void initList(){
         Intent rcv = getIntent();
         diseaseList=rcv.getStringArrayExtra("array");
@@ -80,7 +82,7 @@ public class DiseaseListContainer extends AppCompatActivity implements AdapterVi
         AlertDialog.Builder builder=new AlertDialog.Builder(DiseaseListContainer.this);
         View view = getLayoutInflater().inflate(R.layout.popup,null);
         homeRemedies= (Button) view.findViewById(R.id.button_homeremedie);
-        expertHelp= (Button) view.findViewById(R.id.button_experthelp);
+        emergencyCall= (Button) view.findViewById(R.id.button_emergencycall);
         textTitle= (TextView) view.findViewById(R.id.text_title);
         builder.setView(view);
         final AlertDialog dialog= builder.create();
@@ -192,6 +194,27 @@ public class DiseaseListContainer extends AppCompatActivity implements AdapterVi
                     startActivity(intent);
                     dialog.dismiss();
                 }
+            }
+        });
+        emergencyCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(DiseaseListContainer.this);
+                View view = getLayoutInflater().inflate(R.layout.emergency_popup,null);
+                callDialog= (Button) view.findViewById(R.id.button_call);
+                builder.setView(view);
+                dialog1= builder.create();
+                dialog1.getWindow().getAttributes().windowAnimations=R.style.animationdialog;
+                dialog1.show();
+                dialog.dismiss();
+                callDialog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Uri number = Uri.parse("tel:102");
+                        Intent callIntent = new Intent(Intent.ACTION_DIAL, number);
+                        startActivity(callIntent);
+                    }
+                });
             }
         });
     }

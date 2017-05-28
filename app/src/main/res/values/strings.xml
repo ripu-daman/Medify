@@ -10,4 +10,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="suggest_me_medicines">Suggest Me Medicines</string>
+    <string name="about_us">About us</string>
+    <string name="About">Feeling down or sick? This app will assist you through your bad health, you can find a whole lot of DOMESTIC remedies for number of health related problems.</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="location_rationale"><string name="rationale_camera">This app needs access to your location to work properly.</string></string>
+    <string name="email">damangogna@gmail.com</string>
+
 </resources>

@@ -1,12 +1,20 @@
 package com.daman.farmify;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -19,10 +27,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daman.farmify.Diseases.DiseaseListContainer;
 import com.daman.farmify.GridHome.GridViewAdapter;
 import com.daman.farmify.GridHome.HomeFragment;
 import com.daman.farmify.GridHome.ImageItem;
@@ -34,7 +45,7 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,AdapterView.OnItemClickListener,
-        HomeFragment.OnFragmentInteractionListener,ProfileFragment.OnFragmentInteractionListener,MedicineFragment.OnFragmentInteractionListener{
+        HomeFragment.OnFragmentInteractionListener,ProfileFragment.OnFragmentInteractionListener,MedicineFragment.OnFragmentInteractionListener,LocationListener{
 
     TextView texthome;
     TextView textname;
@@ -44,8 +55,11 @@ public class HomeActivity extends AppCompatActivity
     GridViewAdapter gridAdapter;
     ArrayList<ImageItem> data ;
     ImageItem item,item1,item2,item3,item4,item5;
-
-
+    RatingBar ratingBar;
+    LocationManager locationManager;
+    ProgressDialog progressDialog;
+    double latitude,longitude;
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +67,10 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Fetching Location...");
+        progressDialog.setCancelable(false);
 
 
 
@@ -157,8 +175,8 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
+        if (id == R.id.action_aboutus) {
+            popup();
             return true;
         }
 
@@ -185,8 +203,33 @@ public class HomeActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_home, medicineFragment, medicineFragment.getTag()).commit();
 
         } else if (id == R.id.nav_localhealth) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this,"Please Grant Permissions from Settings",Toast.LENGTH_LONG).show();
+            }else{
+                intent=new Intent(getApplicationContext(),MapsActivity.class);
+                    intent.putExtra("latitude",latitude);
+                    intent.putExtra("longitude",longitude);
+                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 50, 10, HomeActivity.this);
+                progressDialog.show();
+            }
 
         } else if (id == R.id.nav_settings) {
+            AlertDialog.Builder builder=new AlertDialog.Builder(HomeActivity.this);
+            View view = getLayoutInflater().inflate(R.layout.contact_us,null);
+            Button ok = (Button) view.findViewById(R.id.btn_ok);
+            final TextView email_link=(TextView)view.findViewById(R.id.textmail_link);
+            builder.setView(view);
+            final AlertDialog dialog= builder.create();
+            dialog.getWindow().getAttributes().windowAnimations=R.style.animationdialog;
+            dialog.show();
+            dialog.setCancelable(false);
+            ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
 
         } else if (id == R.id.nav_logout) {
             logout();
@@ -206,6 +249,53 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+    void popup(){
+        AlertDialog.Builder builder=new AlertDialog.Builder(HomeActivity.this);
+        View view = getLayoutInflater().inflate(R.layout.activity_about_us,null);
+        Button ok = (Button) view.findViewById(R.id.btn_ok);
+        ratingBar= (RatingBar)view. findViewById(R.id.ratingBar);
+        builder.setView(view);
+        final AlertDialog dialog= builder.create();
+        dialog.getWindow().getAttributes().windowAnimations=R.style.animationdialog;
+        dialog.show();
+        dialog.setCancelable(false);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+       ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+           @Override
+           public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+               Toast.makeText(HomeActivity.this,"Thank You For "+rating+" Stars",Toast.LENGTH_LONG).show();
+           }
+       });
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        latitude=location.getLatitude();
+        longitude=location.getLongitude();
+        progressDialog.dismiss();
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
 
     }
 }
