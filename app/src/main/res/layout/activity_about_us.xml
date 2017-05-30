@@ -129,19 +129,6 @@
             android:enabled="false"
             android:text="Ripudaman Singh" />
 
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/editText"
-            android:layout_alignStart="@+id/editText"
-            android:layout_below="@+id/editText"
-            android:editable="false"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Sandeep Singh"
-            android:enabled="false"/>
-
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
